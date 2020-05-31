@@ -2,7 +2,7 @@ const { createServer } = require('http');
 const { parse } = require('url');
 
 const { enableCors, getRequestData  } = require('./lib/helper');
-const { createUser, login } = require('./lib/user');
+const { signup, signin } = require('./lib/user');
 
 const server = createServer(async (req, res) => {
     enableCors(res);
@@ -20,11 +20,11 @@ async function processMethod(req, res) {
     let data = await getRequestData(req);
     let parsedUrl = parse(req.url);
     switch (`${req.method.toLowerCase() + parsedUrl.pathname.toLowerCase()}`) {
-        case 'put/create':
-            res.end(createUser(JSON.parse(data)));
+        case 'post/signup':
+            res.end(signup(JSON.parse(data)));
             break;
-        case 'post/login':
-            res.end(login(JSON.parse(data)));
+        case 'post/signin':
+            res.end(signin(JSON.parse(data)));
             break;
         default:
             res.end();
