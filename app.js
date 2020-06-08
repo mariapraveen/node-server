@@ -1,8 +1,10 @@
 const { createServer } = require('http');
 const { parse } = require('url');
 
-const { enableCors, getRequestData  } = require('./lib/helper');
+const { enableCors, getRequestData } = require('./lib/helper');
 const { signup, signin } = require('./lib/user');
+const { resetConfig } = require('./lib/reset');
+const { retrieveData } = require('./lib/retrieve');
 
 const server = createServer(async (req, res) => {
     enableCors(res);
@@ -10,6 +12,7 @@ const server = createServer(async (req, res) => {
         res.writeHead(204);
         res.end();
     } else {
+        res.setHeader('content-type', 'application/json');
         await processMethod(req, res);
     }
 });
@@ -25,6 +28,12 @@ async function processMethod(req, res) {
             break;
         case 'post/signin':
             res.end(signin(JSON.parse(data)));
+            break;
+        case 'post/reset':
+            res.end(resetConfig());
+            break;
+        case 'post/retreive':
+            res.end(retrieveData());
             break;
         default:
             res.end();
