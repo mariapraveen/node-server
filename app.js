@@ -24,10 +24,10 @@ async function processMethod(req, res) {
     let parsedUrl = parse(req.url);
     switch (`${req.method.toLowerCase() + parsedUrl.pathname.toLowerCase()}`) {
         case 'post/signup':
-            res.end(signup(JSON.parse(data)));
+            res.end(signup(req, JSON.parse(data)));
             break;
         case 'post/signin':
-            res.end(signin(JSON.parse(data)));
+            res.end(signin(req, JSON.parse(data)));
             break;
         case 'post/reset':
             res.end(resetConfig());
