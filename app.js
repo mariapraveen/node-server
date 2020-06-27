@@ -2,7 +2,8 @@ const { createServer } = require('http');
 const { parse } = require('url');
 
 const { enableCors, getRequestData } = require('./lib/helper');
-const { signup, signin } = require('./lib/user');
+const { signup, signin, userExists } = require('./lib/user');
+const { addPost, getPost } = require('./lib/post');
 const { resetConfig } = require('./lib/reset');
 const { retrieveData } = require('./lib/retrieve');
 
@@ -28,6 +29,15 @@ async function processMethod(req, res) {
             break;
         case 'post/signin':
             res.end(signin(req, JSON.parse(data)));
+            break;
+        case 'post/exists':
+            res.end(userExists(JSON.parse(data)));
+            break;
+        case 'post/addpost':
+            res.end(addPost(JSON.parse(data)));
+            break;
+        case 'post/getpost':
+            res.end(getPost(JSON.parse(data)));
             break;
         case 'post/reset':
             res.end(resetConfig());
