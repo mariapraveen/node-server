@@ -3,9 +3,11 @@ const { parse } = require('url');
 
 const { enableCors, getRequestData } = require('./lib/helper');
 const { signup, signin, userExists } = require('./lib/user');
-const { addPost, getPost } = require('./lib/post');
+const { addPost, getPost, getUserPost } = require('./lib/post');
 const { resetConfig } = require('./lib/reset');
 const { retrieveData } = require('./lib/retrieve');
+
+const PORTNO = 9000;
 
 const server = createServer(async (req, res) => {
     enableCors(res);
@@ -18,7 +20,9 @@ const server = createServer(async (req, res) => {
     }
 });
 
-server.listen(9000);
+server.listen(PORTNO, () => {
+    console.log(`Server listening at ${PORTNO}`)
+});
 
 async function processMethod(req, res) {
     let data = await getRequestData(req);
@@ -38,6 +42,9 @@ async function processMethod(req, res) {
             break;
         case 'post/getpost':
             res.end(getPost(JSON.parse(data)));
+            break;
+        case 'post/getuserpost':
+            res.end(getUserPost(JSON.parse(data)));
             break;
         case 'post/reset':
             res.end(resetConfig());
